@@ -45,41 +45,41 @@ custom_replacements = {
     primary_virtual_network_gateway_express_route_hobo_public_ip_enabled = false
     primary_virtual_network_gateway_vpn_enabled                          = false
     primary_private_dns_zones_enabled                                    = true
-    primary_private_dns_auto_registration_zone_enabled                   = true
+    primary_private_dns_auto_registration_zone_enabled                   = false
     primary_private_dns_resolver_enabled                                 = true
     primary_bastion_enabled                                              = true
 
     # Resource group names
-    management_resource_group_name               = "rg-management-$${starter_location_01}"
-    connectivity_hub_primary_resource_group_name = "rg-hub-$${starter_location_01}"
-    dns_resource_group_name                      = "rg-hub-dns-$${starter_location_01}"
-    ddos_resource_group_name                     = "rg-hub-ddos-$${starter_location_01}"
-    asc_export_resource_group_name               = "rg-asc-export-$${starter_location_01}"
-    service_health_alerts_resource_group_name    = "rg-service-health-alerts-$${starter_location_01}"
+    management_resource_group_name               = "rg-management-$${starter_location_01_short}"
+    connectivity_hub_primary_resource_group_name = "rg-hub-$${starter_location_01_short}"
+    dns_resource_group_name                      = "rg-hub-dns-$${starter_location_01_short}"
+    ddos_resource_group_name                     = "rg-hub-ddos-$${starter_location_01_short}"
+    asc_export_resource_group_name               = "rg-asc-export-$${starter_location_01_short}"
+    service_health_alerts_resource_group_name    = "rg-service-health-alerts-$${starter_location_01_short}"
 
     # Resource names management
-    log_analytics_workspace_name            = "law-management-$${starter_location_01}"
-    ddos_protection_plan_name               = "ddos-$${starter_location_01}"
-    ama_user_assigned_managed_identity_name = "id-management-ama-$${starter_location_01}"
+    log_analytics_workspace_name            = "law-management-$${starter_location_01_short}"
+    ddos_protection_plan_name               = "ddos-$${starter_location_01_short}"
+    ama_user_assigned_managed_identity_name = "id-management-ama-$${starter_location_01_short}"
     dcr_change_tracking_name                = "dcr-change-tracking"
     dcr_defender_sql_name                   = "dcr-defender-sql"
     dcr_vm_insights_name                    = "dcr-vm-insights"
 
     # Resource names primary connectivity
-    primary_virtual_network_name                                 = "vnet-hub-$${starter_location_01}"
-    primary_route_table_firewall_name                            = "rt-hub-fw-$${starter_location_01}"
-    primary_route_table_user_subnets_name                        = "rt-hub-std-$${starter_location_01}"
-    primary_virtual_network_gateway_express_route_name           = "vgw-hub-er-$${starter_location_01}"
-    primary_virtual_network_gateway_express_route_public_ip_name = "pip-vgw-hub-er-$${starter_location_01}"
-    primary_virtual_network_gateway_vpn_name                     = "vgw-hub-vpn-$${starter_location_01}"
-    primary_virtual_network_gateway_vpn_public_ip_name_1         = "pip-vgw-hub-vpn-$${starter_location_01}-001"
-    primary_virtual_network_gateway_vpn_public_ip_name_2         = "pip-vgw-hub-vpn-$${starter_location_01}-002"
-    primary_private_dns_resolver_name                            = "pdr-hub-dns-$${starter_location_01}"
-    primary_bastion_host_name                                    = "bas-hub-$${starter_location_01}"
-    primary_bastion_host_public_ip_name                          = "pip-bastion-hub-$${starter_location_01}"
+    primary_virtual_network_name                                 = "vnet-hub-$${starter_location_01_short}"
+    primary_route_table_firewall_name                            = "rt-hub-fw-$${starter_location_01_short}"
+    primary_route_table_user_subnets_name                        = "rt-hub-std-$${starter_location_01_short}"
+    primary_virtual_network_gateway_express_route_name           = "vgw-hub-er-$${starter_location_01_short}"
+    primary_virtual_network_gateway_express_route_public_ip_name = "pip-vgw-hub-er-$${starter_location_01_short}"
+    primary_virtual_network_gateway_vpn_name                     = "vgw-hub-vpn-$${starter_location_01_short}"
+    primary_virtual_network_gateway_vpn_public_ip_name_1         = "pip-vgw-hub-vpn-$${starter_location_01_short}-001"
+    primary_virtual_network_gateway_vpn_public_ip_name_2         = "pip-vgw-hub-vpn-$${starter_location_01_short}-002"
+    primary_private_dns_resolver_name                            = "pdr-hub-dns-$${starter_location_01_short}"
+    primary_bastion_host_name                                    = "bas-hub-$${starter_location_01_short}"
+    primary_bastion_host_public_ip_name                          = "pip-bastion-hub-$${starter_location_01_short}"
 
     # Private DNS Zones primary
-    primary_auto_registration_zone_name = "$${starter_location_01}.azure.local"
+    primary_auto_registration_zone_name = "$${starter_location_01_short}.azure.local"
 
     # IP Ranges Primary
     # Regional Address Space: 10.0.0.0/16
@@ -91,31 +91,31 @@ custom_replacements = {
     primary_private_dns_resolver_outbound_subnet_address_prefix = "10.10.0.176/28"
 
     # Subnet names (Azure-reserved names AzureBastionSubnet / GatewaySubnet cannot be changed)
-    primary_private_dns_resolver_inbound_subnet_name     = "snet-dns-inbound-$${starter_location_01}"
-    primary_private_dns_resolver_outbound_subnet_name    = "snet-dns-outbound-$${starter_location_01}"
-    secondary_private_dns_resolver_inbound_subnet_name   = "snet-dns-inbound-$${starter_location_02}"
-    secondary_private_dns_resolver_outbound_subnet_name  = "snet-dns-outbound-$${starter_location_02}"
-    tertiary_private_dns_resolver_inbound_subnet_name    = "snet-dns-inbound-$${starter_location_03}"
-    tertiary_private_dns_resolver_outbound_subnet_name   = "snet-dns-outbound-$${starter_location_03}"
-    quaternary_private_dns_resolver_inbound_subnet_name  = "snet-dns-inbound-$${starter_location_04}"
-    quaternary_private_dns_resolver_outbound_subnet_name = "snet-dns-outbound-$${starter_location_04}"
+    primary_private_dns_resolver_inbound_subnet_name     = "snet-dns-inbound-$${starter_location_01_short}"
+    primary_private_dns_resolver_outbound_subnet_name    = "snet-dns-outbound-$${starter_location_01_short}"
+    secondary_private_dns_resolver_inbound_subnet_name   = "snet-dns-inbound-$${starter_location_02_short}"
+    secondary_private_dns_resolver_outbound_subnet_name  = "snet-dns-outbound-$${starter_location_02_short}"
+    tertiary_private_dns_resolver_inbound_subnet_name    = "snet-dns-inbound-$${starter_location_03_short}"
+    tertiary_private_dns_resolver_outbound_subnet_name   = "snet-dns-outbound-$${starter_location_03_short}"
+    quaternary_private_dns_resolver_inbound_subnet_name  = "snet-dns-inbound-$${starter_location_04_short}"
+    quaternary_private_dns_resolver_outbound_subnet_name = "snet-dns-outbound-$${starter_location_04_short}"
 
     # Secondary / tertiary / quaternary hubs: VNet + subnets only.
     # Bastion, gateways, DNS resolver and firewall are NOT deployed; their subnets are pre-created
     # as custom subnets in hub_virtual_networks so they are ready for later use.
-    connectivity_hub_secondary_resource_group_name  = "rg-hub-$${starter_location_02}"
-    connectivity_hub_tertiary_resource_group_name   = "rg-hub-$${starter_location_03}"
-    connectivity_hub_quaternary_resource_group_name = "rg-hub-$${starter_location_04}"
+    connectivity_hub_secondary_resource_group_name  = "rg-hub-$${starter_location_02_short}"
+    connectivity_hub_tertiary_resource_group_name   = "rg-hub-$${starter_location_03_short}"
+    connectivity_hub_quaternary_resource_group_name = "rg-hub-$${starter_location_04_short}"
 
-    secondary_virtual_network_name           = "vnet-hub-$${starter_location_02}"
-    secondary_route_table_firewall_name      = "rt-hub-fw-$${starter_location_02}"
-    secondary_route_table_user_subnets_name  = "rt-hub-std-$${starter_location_02}"
-    tertiary_virtual_network_name            = "vnet-hub-$${starter_location_03}"
-    tertiary_route_table_firewall_name       = "rt-hub-fw-$${starter_location_03}"
-    tertiary_route_table_user_subnets_name   = "rt-hub-std-$${starter_location_03}"
-    quaternary_virtual_network_name          = "vnet-hub-$${starter_location_04}"
-    quaternary_route_table_firewall_name     = "rt-hub-fw-$${starter_location_04}"
-    quaternary_route_table_user_subnets_name = "rt-hub-std-$${starter_location_04}"
+    secondary_virtual_network_name           = "vnet-hub-$${starter_location_02_short}"
+    secondary_route_table_firewall_name      = "rt-hub-fw-$${starter_location_02_short}"
+    secondary_route_table_user_subnets_name  = "rt-hub-std-$${starter_location_02_short}"
+    tertiary_virtual_network_name            = "vnet-hub-$${starter_location_03_short}"
+    tertiary_route_table_firewall_name       = "rt-hub-fw-$${starter_location_03_short}"
+    tertiary_route_table_user_subnets_name   = "rt-hub-std-$${starter_location_03_short}"
+    quaternary_virtual_network_name          = "vnet-hub-$${starter_location_04_short}"
+    quaternary_route_table_firewall_name     = "rt-hub-fw-$${starter_location_04_short}"
+    quaternary_route_table_user_subnets_name = "rt-hub-std-$${starter_location_04_short}"
 
     # IP Ranges Secondary (eastus2) - 10.15.0.0/23
     secondary_hub_virtual_network_address_space                   = "10.15.0.0/23"

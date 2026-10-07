@@ -1,0 +1,23 @@
+# ============================================================
+# POLICIES TO REMOVE for archetype 'management'
+# Remove = this policy is NOT deployed at this management group.
+# To remove a policy: add its exact name below (one per line, comma at the end),
+# remove the leading '#', then save. Leave the list empty to keep all defaults.
+# Default assignments for this archetype (0):
+#   (none)
+# Audit-only (DoNotEnforce) is NOT set here. Set it in platform-landing-zone.tfvars.
+# ============================================================
+base_archetype: management
+name: management_custom
+policy_assignments_to_add: []
+policy_assignments_to_remove: [
+  # PLACEHOLDER - add policy names to REMOVE here, e.g.:
+  # Policy-Name-1,
+  # Policy-Name-2,
+]
+policy_definitions_to_add: []
+policy_definitions_to_remove: []
+policy_set_definitions_to_add: []
+policy_set_definitions_to_remove: []
+role_definitions_to_add: []
+role_definitions_to_remove: []

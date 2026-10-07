@@ -19,7 +19,7 @@ You can define the Azure regions to use throughout the configuration.
 The first location will be used as the primary location, the second as the secondary location, and so on.
 NOTE: Only append new regions to the end. Re-ordering changes $${starter_location_##} values and renames existing resources.
 */
-starter_locations = ["centralus", "eastus2", "centralindia", "westeurope"]
+starter_locations = ["centralus", "eastus2", "centralindia", "northeurope"]
 
 /*
 --- Custom Replacements ---
@@ -60,7 +60,7 @@ custom_replacements = {
     # Resource names management
     log_analytics_workspace_name            = "law-management-$${starter_location_01}"
     ddos_protection_plan_name               = "ddos-$${starter_location_01}"
-    ama_user_assigned_managed_identity_name = "id-management-ama-$${starter_location_01}"
+    ama_user_assigned_managed_identity_name = "uami-management-ama-$${starter_location_01}"
     dcr_change_tracking_name                = "dcr-change-tracking"
     dcr_defender_sql_name                   = "dcr-defender-sql"
     dcr_vm_insights_name                    = "dcr-vm-insights"
@@ -121,7 +121,7 @@ custom_replacements = {
     tertiary_private_dns_resolver_inbound_subnet_address_prefix  = "10.8.0.160/28"
     tertiary_private_dns_resolver_outbound_subnet_address_prefix = "10.8.0.176/28"
 
-    # IP Ranges Quaternary (westeurope) - 10.6.0.0/23
+    # IP Ranges Quaternary (northeurope) - 10.6.0.0/23
     quaternary_hub_virtual_network_address_space                   = "10.6.0.0/23"
     quaternary_bastion_subnet_address_prefix                       = "10.6.0.64/26"
     quaternary_gateway_subnet_address_prefix                       = "10.6.0.128/27"

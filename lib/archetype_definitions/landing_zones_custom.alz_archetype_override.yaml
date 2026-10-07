@@ -67,15 +67,15 @@ policy_assignments_to_remove: [
   # Policy-Name-1,
   # Policy-Name-2,
 # To remove AMA policies, uncomment the following lines:
-  # Deploy-MDFC-DefSQL-AMA,
-  # Deploy-VM-ChangeTrack,
-  # Deploy-VM-Monitoring,
-  # Deploy-vmArc-ChangeTrack,
-  # Deploy-vmHybr-Monitoring,
-  # Deploy-VMSS-ChangeTrack,
-  # Deploy-VMSS-Monitoring,
-# To remove the DDOS modify policy, uncomment the following line:
-  # Enable-DDoS-VNET,
+  Deploy-MDFC-DefSQL-AMA,
+  Deploy-VM-ChangeTrack,
+  Deploy-VM-Monitoring,
+  Deploy-vmArc-ChangeTrack,
+  Deploy-vmHybr-Monitoring,
+  Deploy-VMSS-ChangeTrack,
+  Deploy-VMSS-Monitoring,
+  # To remove the DDOS modify policy, uncomment the following line:
+  Enable-DDoS-VNET,
 ]
 policy_definitions_to_add: []
 policy_definitions_to_remove: []

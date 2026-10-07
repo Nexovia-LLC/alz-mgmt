@@ -15,7 +15,7 @@ policy_assignments_to_remove: [
   # Policy-Name-1,
   # Policy-Name-2,
 # To remove the DDOS modify policy, uncomment the following line:
-  # Enable-DDoS-VNET,
+  Enable-DDoS-VNET,
 ]
 policy_definitions_to_add: []
 policy_definitions_to_remove: []

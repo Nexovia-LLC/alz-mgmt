@@ -54,7 +54,7 @@ policy_assignments_to_remove: [
   # Policy-Name-1,
   # Policy-Name-2,
 # To disable AMA policies, uncomment the following lines:
-  # DenyAction-DeleteUAMIAMA,
+  DenyAction-DeleteUAMIAMA,
   Deploy-MDFC-DefSQL-AMA,
   Deploy-VM-ChangeTrack,
   Deploy-VM-Monitoring,

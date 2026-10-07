@@ -58,7 +58,7 @@ custom_replacements = {
     service_health_alerts_resource_group_name    = "rg-service-health-alerts-$${starter_location_01_short}"
 
     # Resource names management
-    log_analytics_workspace_name            = "law-management-$${starter_location_01_short}"
+    log_analytics_workspace_name            = "log-management-$${starter_location_01_short}"
     ddos_protection_plan_name               = "ddos-$${starter_location_01_short}"
     ama_user_assigned_managed_identity_name = "id-management-ama-$${starter_location_01_short}"
     dcr_change_tracking_name                = "dcr-change-tracking"

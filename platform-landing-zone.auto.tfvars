@@ -83,11 +83,12 @@ custom_replacements = {
 
     # IP Ranges Primary
     # Regional Address Space: 10.0.0.0/16
-    primary_hub_address_space                          = "10.10.0.0/23"
-    primary_hub_virtual_network_address_space          = "10.10.0.0/23"
-    primary_bastion_subnet_address_prefix              = "10.10.0.64/26"
-    primary_gateway_subnet_address_prefix              = "10.10.0.128/27"
-    primary_private_dns_resolver_subnet_address_prefix = "10.10.0.160/28"
+    primary_hub_address_space                                   = "10.10.0.0/23"
+    primary_hub_virtual_network_address_space                   = "10.10.0.0/23"
+    primary_bastion_subnet_address_prefix                       = "10.10.0.64/26"
+    primary_gateway_subnet_address_prefix                       = "10.10.0.128/27"
+    primary_private_dns_resolver_subnet_address_prefix          = "10.10.0.160/28"
+    primary_private_dns_resolver_outbound_subnet_address_prefix = "10.10.0.176/28"
 
     # Secondary / tertiary / quaternary hubs: VNet + subnets only.
     # Bastion, gateways, DNS resolver and firewall are NOT deployed; their subnets are pre-created
@@ -435,7 +436,20 @@ hub_virtual_networks = {
       routing_address_space         = ["$${primary_hub_address_space}"]
       route_table_name_firewall     = "$${primary_route_table_firewall_name}"
       route_table_name_user_subnets = "$${primary_route_table_user_subnets_name}"
-      subnets                       = {}
+      mesh_peering_enabled          = false # No hub-to-hub (global) peering
+      # AzureBastionSubnet and the inbound dns-resolver subnet are created by the module because
+      # bastion and private_dns_resolver are enabled on this hub. Only the outbound subnet is custom.
+      subnets = {
+        dns_resolver_outbound = {
+          name             = "dns-resolver-outbound"
+          address_prefixes = ["$${primary_private_dns_resolver_outbound_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+          delegations = [{
+            name               = "Microsoft.Network.dnsResolvers"
+            service_delegation = { name = "Microsoft.Network/dnsResolvers" }
+          }]
+        }
+      }
     }
     virtual_network_gateways = {
       subnet_address_prefix = "$${primary_gateway_subnet_address_prefix}"
@@ -506,6 +520,7 @@ hub_virtual_networks = {
       routing_address_space         = ["$${secondary_hub_virtual_network_address_space}"]
       route_table_name_firewall     = "$${secondary_route_table_firewall_name}"
       route_table_name_user_subnets = "$${secondary_route_table_user_subnets_name}"
+      mesh_peering_enabled          = false # No hub-to-hub (global) peering
       # Subnet keys match the module's own keys (bastion / gateway / dns_resolver), so enabling those
       # resources later re-uses the same subnet. When you enable one, delete its entry here.
       subnets = {
@@ -557,6 +572,7 @@ hub_virtual_networks = {
       routing_address_space         = ["$${tertiary_hub_virtual_network_address_space}"]
       route_table_name_firewall     = "$${tertiary_route_table_firewall_name}"
       route_table_name_user_subnets = "$${tertiary_route_table_user_subnets_name}"
+      mesh_peering_enabled          = false # No hub-to-hub (global) peering
       # Subnet keys match the module's own keys (bastion / gateway / dns_resolver), so enabling those
       # resources later re-uses the same subnet. When you enable one, delete its entry here.
       subnets = {
@@ -608,6 +624,7 @@ hub_virtual_networks = {
       routing_address_space         = ["$${quaternary_hub_virtual_network_address_space}"]
       route_table_name_firewall     = "$${quaternary_route_table_firewall_name}"
       route_table_name_user_subnets = "$${quaternary_route_table_user_subnets_name}"
+      mesh_peering_enabled          = false # No hub-to-hub (global) peering
       # Subnet keys match the module's own keys (bastion / gateway / dns_resolver), so enabling those
       # resources later re-uses the same subnet. When you enable one, delete its entry here.
       subnets = {

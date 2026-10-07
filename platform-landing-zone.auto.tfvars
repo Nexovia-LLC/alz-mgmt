@@ -90,6 +90,16 @@ custom_replacements = {
     primary_private_dns_resolver_subnet_address_prefix          = "10.10.0.160/28"
     primary_private_dns_resolver_outbound_subnet_address_prefix = "10.10.0.176/28"
 
+    # Subnet names (Azure-reserved names AzureBastionSubnet / GatewaySubnet cannot be changed)
+    primary_private_dns_resolver_inbound_subnet_name     = "snet-dns-inbound-$${starter_location_01}"
+    primary_private_dns_resolver_outbound_subnet_name    = "snet-dns-outbound-$${starter_location_01}"
+    secondary_private_dns_resolver_inbound_subnet_name   = "snet-dns-inbound-$${starter_location_02}"
+    secondary_private_dns_resolver_outbound_subnet_name  = "snet-dns-outbound-$${starter_location_02}"
+    tertiary_private_dns_resolver_inbound_subnet_name    = "snet-dns-inbound-$${starter_location_03}"
+    tertiary_private_dns_resolver_outbound_subnet_name   = "snet-dns-outbound-$${starter_location_03}"
+    quaternary_private_dns_resolver_inbound_subnet_name  = "snet-dns-inbound-$${starter_location_04}"
+    quaternary_private_dns_resolver_outbound_subnet_name = "snet-dns-outbound-$${starter_location_04}"
+
     # Secondary / tertiary / quaternary hubs: VNet + subnets only.
     # Bastion, gateways, DNS resolver and firewall are NOT deployed; their subnets are pre-created
     # as custom subnets in hub_virtual_networks so they are ready for later use.
@@ -448,7 +458,7 @@ hub_virtual_networks = {
           route_table      = { assign_generated_route_table = false }
         }
         dns_resolver_outbound = {
-          name             = "dns-resolver-outbound"
+          name             = "$${primary_private_dns_resolver_outbound_subnet_name}"
           address_prefixes = ["$${primary_private_dns_resolver_outbound_subnet_address_prefix}"]
           route_table      = { assign_generated_route_table = false }
           delegations = [{
@@ -500,6 +510,7 @@ hub_virtual_networks = {
     }
     private_dns_resolver = {
       subnet_address_prefix = "$${primary_private_dns_resolver_subnet_address_prefix}"
+      subnet_name           = "$${primary_private_dns_resolver_inbound_subnet_name}"
       name                  = "$${primary_private_dns_resolver_name}"
     }
     bastion = {
@@ -542,7 +553,7 @@ hub_virtual_networks = {
           route_table      = { assign_generated_route_table = false }
         }
         dns_resolver = {
-          name             = "dns-resolver"
+          name             = "$${secondary_private_dns_resolver_inbound_subnet_name}"
           address_prefixes = ["$${secondary_private_dns_resolver_inbound_subnet_address_prefix}"]
           route_table      = { assign_generated_route_table = false }
           delegations = [{
@@ -551,7 +562,7 @@ hub_virtual_networks = {
           }]
         }
         dns_resolver_outbound = {
-          name             = "dns-resolver-outbound"
+          name             = "$${secondary_private_dns_resolver_outbound_subnet_name}"
           address_prefixes = ["$${secondary_private_dns_resolver_outbound_subnet_address_prefix}"]
           route_table      = { assign_generated_route_table = false }
           delegations = [{
@@ -594,7 +605,7 @@ hub_virtual_networks = {
           route_table      = { assign_generated_route_table = false }
         }
         dns_resolver = {
-          name             = "dns-resolver"
+          name             = "$${tertiary_private_dns_resolver_inbound_subnet_name}"
           address_prefixes = ["$${tertiary_private_dns_resolver_inbound_subnet_address_prefix}"]
           route_table      = { assign_generated_route_table = false }
           delegations = [{
@@ -603,7 +614,7 @@ hub_virtual_networks = {
           }]
         }
         dns_resolver_outbound = {
-          name             = "dns-resolver-outbound"
+          name             = "$${tertiary_private_dns_resolver_outbound_subnet_name}"
           address_prefixes = ["$${tertiary_private_dns_resolver_outbound_subnet_address_prefix}"]
           route_table      = { assign_generated_route_table = false }
           delegations = [{
@@ -646,7 +657,7 @@ hub_virtual_networks = {
           route_table      = { assign_generated_route_table = false }
         }
         dns_resolver = {
-          name             = "dns-resolver"
+          name             = "$${quaternary_private_dns_resolver_inbound_subnet_name}"
           address_prefixes = ["$${quaternary_private_dns_resolver_inbound_subnet_address_prefix}"]
           route_table      = { assign_generated_route_table = false }
           delegations = [{
@@ -655,7 +666,7 @@ hub_virtual_networks = {
           }]
         }
         dns_resolver_outbound = {
-          name             = "dns-resolver-outbound"
+          name             = "$${quaternary_private_dns_resolver_outbound_subnet_name}"
           address_prefixes = ["$${quaternary_private_dns_resolver_outbound_subnet_address_prefix}"]
           route_table      = { assign_generated_route_table = false }
           delegations = [{

@@ -17,9 +17,9 @@ Replacements are denoted by the dollar-dollar curly braces token (e.g. $${starte
 --- Starter Locations ---
 You can define the Azure regions to use throughout the configuration.
 The first location will be used as the primary location, the second as the secondary location, and so on.
-, "eastus2", "centralindia", "westeurope"
+NOTE: Only append new regions to the end. Re-ordering changes $${starter_location_##} values and renames existing resources.
 */
-starter_locations = ["centralus"]
+starter_locations = ["centralus", "eastus2", "centralindia", "westeurope"]
 
 /*
 --- Custom Replacements ---
@@ -60,7 +60,7 @@ custom_replacements = {
     # Resource names management
     log_analytics_workspace_name            = "law-management-$${starter_location_01}"
     ddos_protection_plan_name               = "ddos-$${starter_location_01}"
-    ama_user_assigned_managed_identity_name = "uami-management-ama-$${starter_location_01}"
+    ama_user_assigned_managed_identity_name = "id-management-ama-$${starter_location_01}"
     dcr_change_tracking_name                = "dcr-change-tracking"
     dcr_defender_sql_name                   = "dcr-defender-sql"
     dcr_vm_insights_name                    = "dcr-vm-insights"
@@ -88,6 +88,44 @@ custom_replacements = {
     primary_bastion_subnet_address_prefix              = "10.10.0.64/26"
     primary_gateway_subnet_address_prefix              = "10.10.0.128/27"
     primary_private_dns_resolver_subnet_address_prefix = "10.10.0.160/28"
+
+    # Secondary / tertiary / quaternary hubs: VNet + subnets only.
+    # Bastion, gateways, DNS resolver and firewall are NOT deployed; their subnets are pre-created
+    # as custom subnets in hub_virtual_networks so they are ready for later use.
+    connectivity_hub_secondary_resource_group_name  = "rg-hub-$${starter_location_02}"
+    connectivity_hub_tertiary_resource_group_name   = "rg-hub-$${starter_location_03}"
+    connectivity_hub_quaternary_resource_group_name = "rg-hub-$${starter_location_04}"
+
+    secondary_virtual_network_name           = "vnet-hub-$${starter_location_02}"
+    secondary_route_table_firewall_name      = "rt-hub-fw-$${starter_location_02}"
+    secondary_route_table_user_subnets_name  = "rt-hub-std-$${starter_location_02}"
+    tertiary_virtual_network_name            = "vnet-hub-$${starter_location_03}"
+    tertiary_route_table_firewall_name       = "rt-hub-fw-$${starter_location_03}"
+    tertiary_route_table_user_subnets_name   = "rt-hub-std-$${starter_location_03}"
+    quaternary_virtual_network_name          = "vnet-hub-$${starter_location_04}"
+    quaternary_route_table_firewall_name     = "rt-hub-fw-$${starter_location_04}"
+    quaternary_route_table_user_subnets_name = "rt-hub-std-$${starter_location_04}"
+
+    # IP Ranges Secondary (eastus2) - 10.15.0.0/23
+    secondary_hub_virtual_network_address_space                   = "10.15.0.0/23"
+    secondary_bastion_subnet_address_prefix                       = "10.15.0.64/26"
+    secondary_gateway_subnet_address_prefix                       = "10.15.0.128/27"
+    secondary_private_dns_resolver_inbound_subnet_address_prefix  = "10.15.0.160/28"
+    secondary_private_dns_resolver_outbound_subnet_address_prefix = "10.15.0.176/28"
+
+    # IP Ranges Tertiary (centralindia) - 10.8.0.0/23
+    tertiary_hub_virtual_network_address_space                   = "10.8.0.0/23"
+    tertiary_bastion_subnet_address_prefix                       = "10.8.0.64/26"
+    tertiary_gateway_subnet_address_prefix                       = "10.8.0.128/27"
+    tertiary_private_dns_resolver_inbound_subnet_address_prefix  = "10.8.0.160/28"
+    tertiary_private_dns_resolver_outbound_subnet_address_prefix = "10.8.0.176/28"
+
+    # IP Ranges Quaternary (westeurope) - 10.6.0.0/23
+    quaternary_hub_virtual_network_address_space                   = "10.6.0.0/23"
+    quaternary_bastion_subnet_address_prefix                       = "10.6.0.64/26"
+    quaternary_gateway_subnet_address_prefix                       = "10.6.0.128/27"
+    quaternary_private_dns_resolver_inbound_subnet_address_prefix  = "10.6.0.160/28"
+    quaternary_private_dns_resolver_outbound_subnet_address_prefix = "10.6.0.176/28"
   }
 
   /*
@@ -97,10 +135,13 @@ custom_replacements = {
   NOTE: You cannot refer to another custom resource group identifier in this variable.
   */
   resource_group_identifiers = {
-    management_resource_group_id           = "/subscriptions/$${subscription_id_management}/resourcegroups/$${management_resource_group_name}"
-    ddos_protection_plan_resource_group_id = "/subscriptions/$${subscription_id_connectivity}/resourcegroups/$${ddos_resource_group_name}"
-    primary_connectivity_resource_group_id = "/subscriptions/$${subscription_id_connectivity}/resourceGroups/$${connectivity_hub_primary_resource_group_name}"
-    dns_resource_group_id                  = "/subscriptions/$${subscription_id_connectivity}/resourceGroups/$${dns_resource_group_name}"
+    management_resource_group_id              = "/subscriptions/$${subscription_id_management}/resourcegroups/$${management_resource_group_name}"
+    ddos_protection_plan_resource_group_id    = "/subscriptions/$${subscription_id_connectivity}/resourcegroups/$${ddos_resource_group_name}"
+    primary_connectivity_resource_group_id    = "/subscriptions/$${subscription_id_connectivity}/resourceGroups/$${connectivity_hub_primary_resource_group_name}"
+    secondary_connectivity_resource_group_id  = "/subscriptions/$${subscription_id_connectivity}/resourceGroups/$${connectivity_hub_secondary_resource_group_name}"
+    tertiary_connectivity_resource_group_id   = "/subscriptions/$${subscription_id_connectivity}/resourceGroups/$${connectivity_hub_tertiary_resource_group_name}"
+    quaternary_connectivity_resource_group_id = "/subscriptions/$${subscription_id_connectivity}/resourceGroups/$${connectivity_hub_quaternary_resource_group_name}"
+    dns_resource_group_id                     = "/subscriptions/$${subscription_id_connectivity}/resourceGroups/$${dns_resource_group_name}"
   }
 
   /*
@@ -124,9 +165,9 @@ custom_replacements = {
 This variable can be used to apply tags to all resources that support it. Some resources allow overriding these tags.
 */
 tags = {
-  "Cost Center" = "Technology - Infrastructure"           # TODO: provide value
-  "LE.LMF" = "30014.00072.57260100"   
-  "CreatedOn"   = "2026-10-06"            # TODO: set to the date of the FIRST apply, then never change it (a changing value causes a diff on every run)
+  "Cost Center" = "Technology - Infrastructure" # TODO: provide value
+  "LE.LMF"      = "30014.00072.57260100"
+  "CreatedOn"   = "2026-10-06" # TODO: set to the date of the FIRST apply, then never change it (a changing value causes a diff on every run)
   "CreatedBy"   = "ALZ-Accelerator-Terraform"
   "Application" = "Azure Landing Zone"
   "Environment" = "PROD"
@@ -335,6 +376,27 @@ connectivity_resource_groups = {
       enabled = true
     }
   }
+  vnet_secondary = {
+    name     = "$${connectivity_hub_secondary_resource_group_name}"
+    location = "$${starter_location_02}"
+    settings = {
+      enabled = true
+    }
+  }
+  vnet_tertiary = {
+    name     = "$${connectivity_hub_tertiary_resource_group_name}"
+    location = "$${starter_location_03}"
+    settings = {
+      enabled = true
+    }
+  }
+  vnet_quaternary = {
+    name     = "$${connectivity_hub_quaternary_resource_group_name}"
+    location = "$${starter_location_04}"
+    settings = {
+      enabled = true
+    }
+  }
   dns = {
     name     = "$${dns_resource_group_name}"
     location = "$${starter_location_01}"
@@ -424,6 +486,159 @@ hub_virtual_networks = {
       name                  = "$${primary_bastion_host_name}"
       bastion_public_ip = {
         name = "$${primary_bastion_host_public_ip_name}"
+      }
+    }
+  }
+  secondary = {
+    location          = "$${starter_location_02}"
+    default_parent_id = "$${secondary_connectivity_resource_group_id}"
+    enabled_resources = {
+      firewall                              = false
+      bastion                               = false
+      virtual_network_gateway_express_route = false
+      virtual_network_gateway_vpn           = false
+      private_dns_zones                     = false
+      private_dns_resolver                  = false
+    }
+    hub_virtual_network = {
+      name                          = "$${secondary_virtual_network_name}"
+      address_space                 = ["$${secondary_hub_virtual_network_address_space}"]
+      routing_address_space         = ["$${secondary_hub_virtual_network_address_space}"]
+      route_table_name_firewall     = "$${secondary_route_table_firewall_name}"
+      route_table_name_user_subnets = "$${secondary_route_table_user_subnets_name}"
+      # Subnet keys match the module's own keys (bastion / gateway / dns_resolver), so enabling those
+      # resources later re-uses the same subnet. When you enable one, delete its entry here.
+      subnets = {
+        bastion = {
+          name             = "AzureBastionSubnet"
+          address_prefixes = ["$${secondary_bastion_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+        }
+        gateway = {
+          name             = "GatewaySubnet"
+          address_prefixes = ["$${secondary_gateway_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+        }
+        dns_resolver = {
+          name             = "dns-resolver"
+          address_prefixes = ["$${secondary_private_dns_resolver_inbound_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+          delegations = [{
+            name               = "Microsoft.Network.dnsResolvers"
+            service_delegation = { name = "Microsoft.Network/dnsResolvers" }
+          }]
+        }
+        dns_resolver_outbound = {
+          name             = "dns-resolver-outbound"
+          address_prefixes = ["$${secondary_private_dns_resolver_outbound_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+          delegations = [{
+            name               = "Microsoft.Network.dnsResolvers"
+            service_delegation = { name = "Microsoft.Network/dnsResolvers" }
+          }]
+        }
+      }
+    }
+  }
+  tertiary = {
+    location          = "$${starter_location_03}"
+    default_parent_id = "$${tertiary_connectivity_resource_group_id}"
+    enabled_resources = {
+      firewall                              = false
+      bastion                               = false
+      virtual_network_gateway_express_route = false
+      virtual_network_gateway_vpn           = false
+      private_dns_zones                     = false
+      private_dns_resolver                  = false
+    }
+    hub_virtual_network = {
+      name                          = "$${tertiary_virtual_network_name}"
+      address_space                 = ["$${tertiary_hub_virtual_network_address_space}"]
+      routing_address_space         = ["$${tertiary_hub_virtual_network_address_space}"]
+      route_table_name_firewall     = "$${tertiary_route_table_firewall_name}"
+      route_table_name_user_subnets = "$${tertiary_route_table_user_subnets_name}"
+      # Subnet keys match the module's own keys (bastion / gateway / dns_resolver), so enabling those
+      # resources later re-uses the same subnet. When you enable one, delete its entry here.
+      subnets = {
+        bastion = {
+          name             = "AzureBastionSubnet"
+          address_prefixes = ["$${tertiary_bastion_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+        }
+        gateway = {
+          name             = "GatewaySubnet"
+          address_prefixes = ["$${tertiary_gateway_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+        }
+        dns_resolver = {
+          name             = "dns-resolver"
+          address_prefixes = ["$${tertiary_private_dns_resolver_inbound_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+          delegations = [{
+            name               = "Microsoft.Network.dnsResolvers"
+            service_delegation = { name = "Microsoft.Network/dnsResolvers" }
+          }]
+        }
+        dns_resolver_outbound = {
+          name             = "dns-resolver-outbound"
+          address_prefixes = ["$${tertiary_private_dns_resolver_outbound_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+          delegations = [{
+            name               = "Microsoft.Network.dnsResolvers"
+            service_delegation = { name = "Microsoft.Network/dnsResolvers" }
+          }]
+        }
+      }
+    }
+  }
+  quaternary = {
+    location          = "$${starter_location_04}"
+    default_parent_id = "$${quaternary_connectivity_resource_group_id}"
+    enabled_resources = {
+      firewall                              = false
+      bastion                               = false
+      virtual_network_gateway_express_route = false
+      virtual_network_gateway_vpn           = false
+      private_dns_zones                     = false
+      private_dns_resolver                  = false
+    }
+    hub_virtual_network = {
+      name                          = "$${quaternary_virtual_network_name}"
+      address_space                 = ["$${quaternary_hub_virtual_network_address_space}"]
+      routing_address_space         = ["$${quaternary_hub_virtual_network_address_space}"]
+      route_table_name_firewall     = "$${quaternary_route_table_firewall_name}"
+      route_table_name_user_subnets = "$${quaternary_route_table_user_subnets_name}"
+      # Subnet keys match the module's own keys (bastion / gateway / dns_resolver), so enabling those
+      # resources later re-uses the same subnet. When you enable one, delete its entry here.
+      subnets = {
+        bastion = {
+          name             = "AzureBastionSubnet"
+          address_prefixes = ["$${quaternary_bastion_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+        }
+        gateway = {
+          name             = "GatewaySubnet"
+          address_prefixes = ["$${quaternary_gateway_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+        }
+        dns_resolver = {
+          name             = "dns-resolver"
+          address_prefixes = ["$${quaternary_private_dns_resolver_inbound_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+          delegations = [{
+            name               = "Microsoft.Network.dnsResolvers"
+            service_delegation = { name = "Microsoft.Network/dnsResolvers" }
+          }]
+        }
+        dns_resolver_outbound = {
+          name             = "dns-resolver-outbound"
+          address_prefixes = ["$${quaternary_private_dns_resolver_outbound_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+          delegations = [{
+            name               = "Microsoft.Network.dnsResolvers"
+            service_delegation = { name = "Microsoft.Network/dnsResolvers" }
+          }]
+        }
       }
     }
   }

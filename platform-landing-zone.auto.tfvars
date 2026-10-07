@@ -438,8 +438,15 @@ hub_virtual_networks = {
       route_table_name_user_subnets = "$${primary_route_table_user_subnets_name}"
       mesh_peering_enabled          = false # No hub-to-hub (global) peering
       # AzureBastionSubnet and the inbound dns-resolver subnet are created by the module because
-      # bastion and private_dns_resolver are enabled on this hub. Only the outbound subnet is custom.
+      # bastion and private_dns_resolver are enabled on this hub. GatewaySubnet and the outbound
+      # subnet are custom. The gateway key matches the module's key, so when you enable a gateway
+      # on this hub, delete the gateway entry here and the module re-uses the same subnet.
       subnets = {
+        gateway = {
+          name             = "GatewaySubnet"
+          address_prefixes = ["$${primary_gateway_subnet_address_prefix}"]
+          route_table      = { assign_generated_route_table = false }
+        }
         dns_resolver_outbound = {
           name             = "dns-resolver-outbound"
           address_prefixes = ["$${primary_private_dns_resolver_outbound_subnet_address_prefix}"]
